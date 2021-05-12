@@ -53,6 +53,7 @@ public class GrafanaRestController {
 
 	@PostConstruct
 	public void init() {
+		log.info("Loading fields translation ");
 		GRAFANA_TO_OMI = new HashMap<String, String>();
 		GRAFANA_TO_OMI.put("title", "title");
 		GRAFANA_TO_OMI.put("message", "description");
@@ -63,6 +64,8 @@ public class GrafanaRestController {
 		GRAFANA_TAGS_TO_OMI.put("Tipus", "object");
 		GRAFANA_TAGS_TO_OMI.put("Categoria", "category");
 		GRAFANA_TAGS_TO_OMI.put("Origen", "affectedCI");
+		
+		log.info("OMI URL: " + conf.getOmiUrl());
 	}
 	
 	@PostMapping(value = "/omi/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
