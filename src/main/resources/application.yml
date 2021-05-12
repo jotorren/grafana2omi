@@ -24,6 +24,13 @@ management:
         include: info, health, prometheus
 
 monitoring:
-  omi-url: http://localhost:3001
   omi-template: templates/omi.xml
+
+---
+
+spring:
+  profiles: loc
+  
+monitoring:
+  omi-url: http://localhost:3001
     
