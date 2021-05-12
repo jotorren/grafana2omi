@@ -76,10 +76,11 @@ public class GrafanaRestController {
 
 			JsonNode tags = json.get(TAGS_FIELD);
 			GRAFANA_TAGS_TO_OMI.entrySet().forEach(entry -> {
-				Optional.ofNullable(tags.get(entry.getKey())).ifPresent(entryKey ->  {
+				String entryKey = tags.get(entry.getKey());
+				if (null != entryKey){
 					String value = entryKey.asText();
-					data.put(entry.getValue(), value);
-				});
+					data.put(entry.getValue(), value);					
+				}
 			});
 
 			String state = json.get(STATE_FIELD).asText();
