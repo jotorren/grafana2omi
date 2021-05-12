@@ -1,0 +1,29 @@
+logging:
+  level:
+    root: INFO
+  pattern:
+    console: "{\"time\": \"%d\", \"level\": \"%p\", \"thread\": \"%t\", \"source\": \"%logger{25}:%L\", \"message\": \"%replace(%m%wEx){'[\r\n]+', ' '}%nopex\"}%n"
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: hes-monitoring-omi
+
+management:
+  metrics:
+    tags:
+      application: hes-monitoring-omi
+      region: hes
+    web:
+      server:
+        auto-time-requests: false
+  endpoints:
+    web:
+      exposure:
+        include: info, health, prometheus
+
+monitoring:
+  omi-url: http://localhost:3001
+  omi-template: templates/omi.xml
+    
