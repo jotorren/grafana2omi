@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpEntity;
@@ -34,18 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GrafanaRestController {
 
-	private static final Map<String, String> GRAFANA_TO_OMI = Map.of(
-			"title", "title", 
-			"message", "description"
-	);
-
-	private static final Map<String, String> GRAFANA_TAGS_TO_OMI = Map.of(
-			"Criticitat", "severity",
-			"Namespace", "node",
-			"Tipus", "object",
-			"Categoria", "category",
-			"Origen", "affectedCI"
-	);
+	private Map<String, String> GRAFANA_TO_OMI;
+	private Map<String, String> GRAFANA_TAGS_TO_OMI;
 	
 	private static final String STATE_FIELD = "state";
 	private static final String TAGS_FIELD = "tags";
@@ -59,6 +50,20 @@ public class GrafanaRestController {
 	private final FreemarkerService service;
 	private final RestTemplate restTemplate;
 	private final MonitoringConfigurationProperties conf;
+
+	@PostConstruct
+	public void init() {
+		GRAFANA_TO_OMI = new HashMap<String, String>();
+		GRAFANA_TO_OMI.put("title", "title");
+		GRAFANA_TO_OMI.put("message", "description");
+		
+		GRAFANA_TAGS_TO_OMI = new HashMap<String, String>();
+		GRAFANA_TAGS_TO_OMI.put("Criticitat", "severity");
+		GRAFANA_TAGS_TO_OMI.put("Namespace", "node");
+		GRAFANA_TAGS_TO_OMI.put("Tipus", "object");
+		GRAFANA_TAGS_TO_OMI.put("Categoria", "category");
+		GRAFANA_TAGS_TO_OMI.put("Origen", "affectedCI");
+	}
 	
 	@PostMapping(value = "/omi/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
 	ResponseEntity<String> grafanaWebHook(@RequestBody String alert, HttpServletResponse response) {
